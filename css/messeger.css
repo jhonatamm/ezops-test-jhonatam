@@ -1,0 +1,25 @@
+.messageiro {
+
+ 
+}
+.windowmessage{
+
+}
+
+.mensage{
+	overflow:scroll; 
+	overflow-x: hidden;
+	height: 400px;
+}
+.mensagens{
+    display: block;
+    margin: 20px;
+    padding: 20px;
+    background: #ccc;
+    width: 95%;
+    border-radius: 5px; 
+
+}
+.title{
+	  
+}

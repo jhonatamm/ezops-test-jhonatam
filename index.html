@@ -6,49 +6,90 @@
 	<script src="js/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<title>Mensenger</title>
+	<link rel="stylesheet" href="css/messeger.css">	<title>Mensenger</title>
 </head>
 <body>
+	
+	<div class="container border border-secondary"><div class="title"><h1>Mensagens</h1></div>	</div>	
+	<div class="container border border-secondary">
 
-	<div class="container">
-		<br>
+		
+	<div class="container windowmessage">
+		
+		<div class ="messages mensage" id="messages">
+		</div>
+
+
+	</div >
+	<br>
+	<hr style="height:2px; border:none; color:#000; background-color:#000; margin-top: 0px; margin-bottom: 0px;"/><br>
+	<div class="container messageiro">
 		<div class="jumbotron">
-			<h1 class="display-4">Send Message</h1>
+			<h1 class="display-5">Send Message</h1>
 			<br>
 			<input id = "name" class="form-control" placeholder="Name">
 			<br>
-			<textarea id = "message" class="form-control" placeholder="Your Message Here">
+			<textarea id = "message" class="form-control" placeholder="">
 			</textarea>
 			<br>
 			<button id="send" class="btn btn-success">Send</button>
 		</div>
-		<div id="messages">
-		</div>
 	</div>
+</div>
 	<!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
 	<script>
 		var socket = io();
 		socket.on('message', addMessages);
 		$(() => {
 			$("#send").click(()=>{
+
+
 				sendMessage({
 					name: $("#name").val(), 
 					message:$("#message").val()});
+
 			})
-			getMessages()
+			$("#message").val('');
+			$("#message").focus();
+			getMessages();
+
+
 		});
 		function addMessages(message){
-			$("#messages").append(`
+			var color = colorUser(message.name);
+			$("#messages").append(`<div class="mensagens" style="background:${color}" >
 				<h4> ${message.name} </h4>
-				<p>  ${message.message} </p>`)
+				<p>  ${message.message} </p></div>`);
+			descer();
 		}
 		function getMessages(){
 			$.get('http://localhost:3000/messages', (data) => {
+				console.log(data);
 				data.forEach(addMessages);
-			})
+			});
+			
 		}
 		function sendMessage(message){
 			$.post('http://localhost:3000/messages', message)
+		}
+		function descer(){
+  			var elm    = $('.mensage');
+  			var height = elm[0].scrollHeight;
+  			elm.scrollTop(height);
+  			console.log(height);
+		}
+		function colorUser(nome){
+			var color = "#ccc";
+			var name = nome;
+			name = name.toLowerCase();
+			if(name >= "g"){
+				color = "#ffc107";
+			} if (name >= "n"){
+				color ="#20c997";
+			} if (name >= "t"){
+				color = "#ff00ff";
+			}
+			return color;
 		}
 
 	</script>
